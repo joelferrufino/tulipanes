@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tulipanes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#DCE8D0; --surface:#EEF4E6; --ink:#1E3320; --muted:#4F6650; --line:#B5C9A8; --leaf:#3F7A3C; --accent:#D6264B;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#14201A; --surface:#1E2D24; --ink:#E6F0DF; --muted:#9DB3A0; --line:#34503C; --leaf:#5FA35B; --accent:#F0587A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14201A; --surface:#1E2D24; --ink:#E6F0DF; --muted:#9DB3A0; --line:#34503C; --leaf:#5FA35B; --accent:#F0587A;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"DM Serif Display",Georgia,serif;font-weight:400;line-height:1.1;margin:0}
+main{max-width:900px;margin:0 auto;padding:0 20px 64px}
+section{margin-top:64px}
+h2{font-size:clamp(1.8rem,5vw,2.5rem);margin-bottom:18px}
+p{max-width:64ch;margin:0 0 14px}
+
+.hero{padding-top:48px}
+.hero h1{font-size:clamp(3.2rem,15vw,8rem);letter-spacing:-.02em}
+.hero p{font-size:1.15rem;color:var(--muted);margin-top:14px}
+.field{display:flex;align-items:flex-end;justify-content:space-between;gap:2px;margin:30px 0 0;border-bottom:4px solid var(--leaf);height:210px}
+.field svg{flex:1 1 0;min-width:0;max-width:70px;height:100%;transform-origin:50% 100%}
+.field svg:nth-child(odd){height:84%}
+.field svg:nth-child(3n){height:70%}
+
+.origin{list-style:none;margin:0;padding:0;border-left:4px solid var(--leaf)}
+.origin li{position:relative;padding:0 0 24px 24px}
+.origin li::before{content:"";position:absolute;left:-12px;top:7px;width:20px;height:20px;border-radius:50% 50% 50% 0;background:var(--accent);transform:rotate(-45deg)}
+.origin h3{font-size:1.25rem}
+.origin .when{color:var(--muted);font-size:.92rem;margin:2px 0 4px}
+.origin p{margin:0}
+
+.picker{display:grid;grid-template-columns:minmax(150px,230px) 1fr;gap:28px;align-items:center;background:var(--surface);border:2px solid var(--line);padding:24px;border-radius:18px 4px 18px 4px}
+.picker svg{width:100%;height:auto;max-height:340px}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.swatches button{width:44px;height:44px;border-radius:50%;border:3px solid var(--surface);outline:2px solid var(--line);cursor:pointer;padding:0}
+.swatches button[aria-pressed="true"]{outline:3px solid var(--ink)}
+.swatches button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+#cname{font-size:1.8rem}
+#cmean{margin-top:6px}
+@media (max-width:600px){.picker{grid-template-columns:1fr;justify-items:center;text-align:center}.swatches{justify-content:center}}
+
+.grow{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.grow div{background:var(--surface);border:2px solid var(--line);padding:16px 18px;border-radius:4px 18px 4px 18px}
+.grow h3{font-size:1.2rem;margin-bottom:6px}
+.grow p{margin:0;font-size:.97rem}
+
+.facts{margin:0;padding:0;list-style:none;columns:2 280px;column-gap:28px}
+.facts li{break-inside:avoid;padding:10px 0;border-bottom:1px solid var(--line)}
+
+footer{margin-top:64px;border-top:2px solid var(--line);padding-top:16px;color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion:no-preference){
+  .field svg{animation:rise .9s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i)*70ms)}
+}
+@keyframes rise{from{transform:scaleY(.2);opacity:0}to{transform:none;opacity:1}}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <h1>Tulipanes</h1>
+    <p>Una flor de primavera que nació en las montañas de Asia Central, enamoró a los otomanos y terminó provocando una de las burbujas económicas más famosas de la historia.</p>
+    <div class="field" id="field" aria-hidden="true"></div>
+  </header>
+
+  <section>
+    <h2>De las montañas a Ámsterdam</h2>
+    <ol class="origin">
+      <li><h3>Asia Central</h3><div class="when">Mucho antes de su cultivo</div><p>Los tulipanes silvestres crecen de forma natural en zonas montañosas y de estepa, entre Asia Central y Turquía.</p></li>
+      <li><h3>Imperio Otomano</h3><div class="when">Siglos XV y XVI</div><p>Se volvieron una flor de jardines y palacios, y se cultivaron con mucho esmero.</p></li>
+      <li><h3>Europa</h3><div class="when">Segunda mitad del siglo XVI</div><p>Los bulbos llegaron a Europa y enseguida se convirtieron en un objeto de lujo, sobre todo en los Países Bajos.</p></li>
+      <li><h3>La tulipomanía</h3><div class="when">Alrededor de 1637</div><p>Los precios de los bulbos se dispararon y después cayeron en picada. Los historiadores todavía discuten qué tan grave fue realmente el desplome.</p></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>El lenguaje de los colores</h2>
+    <div class="picker">
+      <svg id="big" viewBox="0 0 100 200" aria-label="Tulipán del color elegido" role="img"></svg>
+      <div>
+        <div class="swatches" id="sw"></div>
+        <h3 id="cname"></h3>
+        <p id="cmean"></p>
+        <p style="color:var(--muted);font-size:.9rem">Son significados tradicionales de la jardinería, no reglas: dependen de la cultura y la época.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cómo cultivarlos</h2>
+    <div class="grow">
+      <div><h3>Plantación</h3><p>Se plantan los bulbos en otoño, con la punta hacia arriba, a una profundidad de unas tres veces su altura. En el hemisferio sur eso es más o menos entre marzo y mayo.</p></div>
+      <div><h3>Frío</h3><p>Necesitan pasar varias semanas de frío bajo tierra para florecer bien. En zonas templadas, muchos jardineros guardan los bulbos en la heladera antes de plantarlos.</p></div>
+      <div><h3>Riego y sol</h3><p>Prefieren suelo que drene bien y bastante sol. El exceso de agua pudre el bulbo.</p></div>
+      <div><h3>Mascotas</h3><p>Los tulipanes, en especial el bulbo, son tóxicos para perros y gatos. Conviene plantarlos donde no los alcancen.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Datos sueltos</h2>
+    <ul class="facts">
+      <li>Pertenecen al género <em>Tulipa</em>, dentro de la familia de las liliáceas.</li>
+      <li>Existen unas 75 especies silvestres y miles de variedades cultivadas.</li>
+      <li>Los tulipanes «rotos», con rayas y llamas de color, deben ese dibujo a un virus que los infecta.</li>
+      <li>El nombre viene de una palabra turca y persa que significa «turbante».</li>
+      <li>Los Países Bajos siguen siendo el gran productor de bulbos del mundo.</li>
+      <li>Los jardines de Keukenhof, en Lisse, abren cada primavera con millones de bulbos en flor.</li>
+    </ul>
+  </section>
+
+  <footer>Página informativa hecha con HTML, CSS y SVG.</footer>
+</main>
+
+<script>
+(function(){
+  function tulip(c){
+    return '<path d="M50 105V200" stroke="var(--leaf)" stroke-width="5" fill="none" stroke-linecap="round"/>'+
+      '<path d="M50 190C25 185 14 160 16 125C36 135 48 158 50 190Z" fill="var(--leaf)"/>'+
+      '<path d="M50 175C72 170 84 150 84 120C66 130 52 150 50 175Z" fill="var(--leaf)" opacity=".85"/>'+
+      '<path d="M20 38C18 88 32 108 50 108C68 108 82 88 80 38L65 54L50 18L35 54Z" fill="'+c+'"/>'+
+      '<path d="M35 54L50 18L65 54C63 88 55 104 50 106C45 104 37 88 35 54Z" fill="#fff" opacity=".22"/>';
+  }
+  function svg(c){return '<svg viewBox="0 0 100 200" aria-hidden="true">'+tulip(c)+'</svg>';}
+  var colors=[
+    ["Rojo","#D6264B","Amor y pasión. Es el tulipán clásico para declarar sentimientos."],
+    ["Amarillo","#F5B50A","Alegría y buen ánimo. Se regala para levantar el día."],
+    ["Blanco","#F4F1EA","Perdón y respeto. También se asocia con los nuevos comienzos."],
+    ["Violeta","#6B3FA0","Elegancia y realeza, por la antigua relación del violeta con la nobleza."],
+    ["Rosa","#F28DB2","Cariño y afecto suave. Es un color de amistad y de cuidado."],
+    ["Naranja","#F27A1A","Energía y entusiasmo. Transmite calidez y ganas de hacer cosas."]
+  ];
+  var field=document.getElementById("field"),html="",i;
+  for(i=0;i<16;i++){html+=svg(colors[i%colors.length][1]).replace('<svg ','<svg style="--i:'+i+'" ');}
+  field.innerHTML=html;
+
+  var big=document.getElementById("big"),sw=document.getElementById("sw"),cn=document.getElementById("cname"),cm=document.getElementById("cmean");
+  function pick(n){
+    big.innerHTML=tulip(colors[n][1]);
+    cn.textContent=colors[n][0];cm.textContent=colors[n][2];
+    Array.prototype.forEach.call(sw.children,function(b,k){b.setAttribute("aria-pressed",k===n?"true":"false");});
+  }
+  colors.forEach(function(c,n){
+    var b=document.createElement("button");
+    b.type="button";b.style.background=c[1];b.setAttribute("aria-label",c[0]);
+    b.addEventListener("click",function(){pick(n);});
+    sw.appendChild(b);
+  });
+  pick(0);
+})();
+</script>
+</body>
+</html>
